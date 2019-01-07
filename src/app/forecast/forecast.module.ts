@@ -2,7 +2,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/forms';
 import { ForecastPage } from './forecast.page';
 
 @NgModule({
@@ -12,6 +12,7 @@ import { ForecastPage } from './forecast.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: ForecastPage }])
   ],
-  declarations: [ForecastPage]
+  declarations: [ForecastPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ForecastPageModule {}
