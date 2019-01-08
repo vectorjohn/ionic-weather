@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { Forecast } from '../models/forecast';
 import { IconMapService } from '../services/icon-map/icon-map.service';
+import {WeatherService} from '../services/weather/weather.service';
 
 @Component({
   selector: 'app-forecast',
@@ -9,7 +10,8 @@ import { IconMapService } from '../services/icon-map/icon-map.service';
   styleUrls: ['forecast.page.scss']
 })
 export class ForecastPage {
-  forecast: Forecast = [
+  forecast: Forecast;
+  /*= [
     [
       {
         temperature: 300,
@@ -31,7 +33,12 @@ export class ForecastPage {
         date: new Date(2018, 8, 21)
       }
     ]
-  ];
+  ];*/
 
-  constructor(public iconMap: IconMapService) {}
+  constructor(public iconMap: IconMapService,
+              private weather: WeatherService) {}
+
+  ionViewDidEnter() {
+      this.weather.forecast().subscribe(w => (this.forecast = w));
+  }
 }
