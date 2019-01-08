@@ -1,28 +1,36 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {from, Observable} from 'rxjs';
+import {flatMap} from 'rxjs/operators';
 import {map} from 'rxjs/operators';
 import {Weather} from '../../models/weather';
 import {Forecast} from '../../models/forecast';
 import {UVIndex} from '../../models/uv-index';
+import {Coordinate} from '../../models/coordinate';
+import {LocationService} from '../location/location.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WeatherService {
-  private appId = '69f068bb8bf2bc3e061cb2b62c255c65';  // or use your own API key
+  private appId = 'e1ca1f13aba3907e78a98e4cd7c26d9d';  // or use your own API key
   private baseUrl = 'https://api.openweathermap.org/data/2.5';
 
   private latitude = 43.073051;
   private longitude = -89.401230;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private location: LocationService) {}
+
+  private getCurrentLocation(): Observable<Coordinate> {
+    return from(this.location.current());
+  }
 
   current(): Observable<Weather> {
-   return this.http.get(
-     `${this.baseUrl}/weather?lat=${this.latitude}&lon=${
-       this.longitude
-     }&appid=${this.appId}`).pipe(map(this.unpackWeather.bind(this)));
+   return this.getCurrentLocation()
+       .pipe(flatMap(coord => this.http.get(
+           `${this.baseUrl}/weather?lat=${coord.latitude}&lon=${
+               coord.longitude
+               }&appid=${this.appId}`).pipe(map(this.unpackWeather.bind(this)))));
  }
 
  forecast(): Observable<Forecast> {
@@ -43,6 +51,7 @@ export class WeatherService {
     return {
       temperature: res.main.temp,
       condition: res.weather[0].id,
+      locationName: res.name,
       date: new Date(res.dt * 1000)
     };
   }
