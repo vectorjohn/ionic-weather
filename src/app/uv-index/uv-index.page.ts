@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { UVIndex } from '../models/uv-index';
 import {WeatherService} from '../services/weather/weather.service';
+import {UserPreferencesComponent} from '../user-preferences/user-preferences.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-uv-index',
@@ -28,9 +30,14 @@ export class UVIndexPage {
       'and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.'
   ];
 
-  constructor(private weather: WeatherService) {}
+  constructor(private weather: WeatherService, private modal: ModalController) {}
 
   ionViewDidEnter() {
       this.weather.uvIndex().subscribe(w => (this.uvIndex = w));
   }
+
+    async openUserPreferences(): Promise<void> {
+        const m = await this.modal.create({ component: UserPreferencesComponent });
+        await m.present();
+    }
 }

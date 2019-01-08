@@ -8,6 +8,7 @@ import {Forecast} from '../../models/forecast';
 import {UVIndex} from '../../models/uv-index';
 import {Coordinate} from '../../models/coordinate';
 import {LocationService} from '../location/location.service';
+import {UserPreferencesService} from '../user-preferences/user-preferences.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,10 +20,12 @@ export class WeatherService {
   private latitude = 43.073051;
   private longitude = -89.401230;
 
-  constructor(private http: HttpClient, private location: LocationService) {}
+  constructor(private http: HttpClient, private location: LocationService, private userPreferences: UserPreferencesService) {}
 
   private getCurrentLocation(): Observable<Coordinate> {
-    return from(this.location.current());
+      return from(this.userPreferences.getCity()
+          .then(city => city ? city.coordinate : null)
+          .then(coordinate => coordinate || this.location.current()));
   }
 
   current(): Observable<Weather> {

@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { Forecast } from '../models/forecast';
 import { IconMapService } from '../services/icon-map/icon-map.service';
 import {WeatherService} from '../services/weather/weather.service';
+import {UserPreferencesComponent} from '../user-preferences/user-preferences.component';
+import {ModalController} from '@ionic/angular';
 
 @Component({
   selector: 'app-forecast',
@@ -36,9 +38,15 @@ export class ForecastPage {
   ];*/
 
   constructor(public iconMap: IconMapService,
-              private weather: WeatherService) {}
+              private weather: WeatherService,
+              private modal: ModalController) {}
 
   ionViewDidEnter() {
       this.weather.forecast().subscribe(w => (this.forecast = w));
   }
+
+    async openUserPreferences(): Promise<void> {
+        const m = await this.modal.create({ component: UserPreferencesComponent });
+        await m.present();
+    }
 }

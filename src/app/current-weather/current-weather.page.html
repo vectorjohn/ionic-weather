@@ -3,15 +3,20 @@
     <ion-title>
       Current Weather
     </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="openUserPreferences()">
+        <ion-icon slot="icon-only" name="settings"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding text-center>
   <div class="information">
-    <div class="city">{{currentWeather.locationName}}</div>
+    <div class="city">{{cityName}}</div>
     <kws-temperature
       class="primary-value"
-      scale="F"
+      [scale]="scale"
       temperature="{{currentWeather?.temperature}}"
     ></kws-temperature>
   </div>
