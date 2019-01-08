@@ -5,6 +5,7 @@ import { IconMapService } from '../services/icon-map/icon-map.service';
 import {WeatherService} from '../services/weather/weather.service';
 import {UserPreferencesComponent} from '../user-preferences/user-preferences.component';
 import {ModalController} from '@ionic/angular';
+import {NetworkService} from '../services/network/network.service';
 
 @Component({
   selector: 'app-forecast',
@@ -39,7 +40,8 @@ export class ForecastPage {
 
   constructor(public iconMap: IconMapService,
               private weather: WeatherService,
-              private modal: ModalController) {}
+              private modal: ModalController,
+              public network: NetworkService) {}
 
   ionViewDidEnter() {
       this.weather.forecast().subscribe(w => (this.forecast = w));

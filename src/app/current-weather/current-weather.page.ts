@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import { IconMapService } from '../services/icon-map/icon-map.service';
 import { Weather } from '../models/weather';
@@ -7,30 +7,36 @@ import {LoadingController, ModalController} from '@ionic/angular';
 import {UserPreferencesComponent} from '../user-preferences/user-preferences.component';
 import {UserPreferencesService} from '../services/user-preferences/user-preferences.service';
 import {Subscription} from 'rxjs/index';
+import {NetworkService} from '../services/network/network.service';
 
 @Component({
   selector: 'app-current-weather',
   templateUrl: 'current-weather.page.html',
   styleUrls: ['current-weather.page.scss']
 })
-export class CurrentWeatherPage implements OnInit {
+export class CurrentWeatherPage implements OnInit, OnDestroy {
   currentWeather: Weather;
   cityName: string;
   scale: string;
 
-  private subscription: Subscription;
+  private prefChange: Subscription;
 
   constructor(public iconMap: IconMapService,
               private weather: WeatherService,
               private loading: LoadingController,
               private modal: ModalController,
+              public network: NetworkService,
               private userPreferences: UserPreferencesService) { }
 
   ngOnInit() {
-      this.subscription = this.userPreferences.changed.subscribe(() =>
+      this.prefChange = this.userPreferences.changed.subscribe(() =>
           this.getData()
       );
   }
+
+    ngOnDestroy() {
+        this.prefChange.unsubscribe();
+    }
 
   async ionViewDidEnter() {
       this.getData();

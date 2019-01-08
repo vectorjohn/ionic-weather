@@ -89,4 +89,5 @@
         <string>To determine the location for which to get weather data</string>
     </config-file>
     <engine name="android" spec="7.1.4" />
+    <plugin name="cordova-plugin-network-information" spec="2.0.1" />
 </widget>

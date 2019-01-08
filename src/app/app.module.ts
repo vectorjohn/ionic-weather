@@ -6,6 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Network } from '@ionic-native/network/ngx';
 import { LoadingController } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -24,6 +25,7 @@ import {FormsModule} from '@angular/forms';
     LoadingController,
     StatusBar,
     SplashScreen,
+    Network,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],

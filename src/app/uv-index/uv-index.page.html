@@ -9,6 +9,7 @@
 </ion-header>
 
 <ion-content text-center padding>
+  <div *ngIf="!network.onLine">Warning: network is offline, data may be stale</div>
   <kws-uv-index class="primary-value" [uvIndex]="uvIndex?.value"></kws-uv-index>
   <div class="description">{{ advice[(uvIndex?.riskLevel)] }}</div>
 </ion-content>
